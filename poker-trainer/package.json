@@ -1,0 +1,75 @@
+{
+  "name": "poker-trainer",
+  "private": true,
+  "version": "1.0.0",
+  "description": "6-Max Preflop Range Trainer",
+  "author": "Programmerjavalearning",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "build:renderer": "vite build",
+    "build": "npm run build:electron && npm run build:renderer",
+    "dev:electron": "wait-on tcp:5173 && electron .",
+    "dev": "npm run build:electron && concurrently --kill-others -n vite,elec -c cyan,green \"vite\" \"npm run dev:electron\"",
+    "package:win": "npm run build && electron-builder --win",
+    "package": "npm run build && electron-builder",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^41.0.3",
+    "electron-builder": "^26.8.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.2",
+    "wait-on": "^9.0.4"
+  },
+  "build": {
+    "appId": "com.pokertrainer.app",
+    "productName": "Poker Trainer",
+    "copyright": "Copyright © 2026",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "dist-electron/**"
+    ],
+    "extraResources": [
+      {
+        "from": "src/data/poker_ranges_6max.json",
+        "to": "poker_ranges_6max.json"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
